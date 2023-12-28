@@ -5,8 +5,7 @@ const token = '6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c';
 const bot = new TelegramApi(token, {polling: true});
 
 const chats = {}
-const oneAuthDate = {}
-people = [1339170675];
+people = [0];
 
 const currentTime = new Date();
 const Month = currentTime.getMonth()
@@ -21,8 +20,9 @@ const startGame = async (chatId) => {
       if(chatId == people[i]) {
          flag = true;
       }
-   }  
-      if(!flag) {  
+   }  if(flag) {
+
+   }  else {  
          people.push(chatId);
           //Rand Cards
          const numbers = [];
