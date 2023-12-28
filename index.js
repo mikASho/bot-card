@@ -8,6 +8,7 @@ const bot = new TelegramApi(token, {polling: true});
 const chats = {}
 const Time = {}
 const oneAuthDate = {}
+people = [0];
 
 const currentTime = new Date();
 const Month = currentTime.getMonth()
@@ -16,19 +17,30 @@ console.log(Month)
 const startGame = async (chatId) => {
    await bot.sendPhoto(chatId, './pictures/Main.png');
    await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
-
-   //Rand Cards
-  const numbers = [];
-  while (numbers.length < 36) {
-    const randomNum = Math.floor(Math.random() * (36)) + 1;
-    if (!numbers.includes(randomNum)) {
-      numbers.push(randomNum);
-    }
-  }
-  // разбили массив на куски по 3 эл, объект с двумерным массивом
-  const chunkedNumbersCard = SplitArray(numbers, 3); 
-  chats[chatId] = chunkedNumbersCard;
-  console.log(chats)
+   
+   flag = false;
+   for(let i = 0; people.length > i; i++) {
+      
+      if(chatId == people[i]) {
+         flag = true;
+      }
+   }  
+      if(!flag) {  
+         people.push(chatId);
+          //Rand Cards
+         const numbers = [];
+         while (numbers.length < 36) {
+            const randomNum = Math.floor(Math.random() * (36)) + 1;
+            if (!numbers.includes(randomNum)) {
+               numbers.push(randomNum);
+            }
+         }
+         // разбили массив на куски по 3 эл, объект с двумерным массивом
+         const chunkedNumbersCard = SplitArray(numbers, 3); 
+         chats[chatId] = chunkedNumbersCard;
+         console.log(chats)
+      }
+      console.log(people)
 }
 
 const start = async () => {
@@ -44,7 +56,7 @@ const start = async () => {
       
       console.log(msg);
       
-      await bot.sendMessage(chatId, `Привет, ${msg.from.first_name} ! Хочешь сделать рассклад?`, ChoiceOptions);
+      await bot.sendMessage(chatId, `Привет, ${msg.from.first_name} ! Хочешь сделать расклад?`, ChoiceOptions);
    })
    
    //Buttons of choice
@@ -52,6 +64,8 @@ const start = async () => {
       const data = msg.data;
       const chatId = msg.message.chat.id;
 
+      console.log(people);
+      
       console.log(oneAuthDate[chatId]);
       if(data === 'Yes') {        
          return startGame(chatId);
