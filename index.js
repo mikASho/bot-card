@@ -4,11 +4,9 @@ const token = '6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c';
 
 const bot = new TelegramApi(token, {polling: true});
 
-
 const chats = {}
-const Time = {}
 const oneAuthDate = {}
-people = [0];
+people = [];
 
 const currentTime = new Date();
 const Month = currentTime.getMonth()
@@ -20,7 +18,6 @@ const startGame = async (chatId) => {
    
    flag = false;
    for(let i = 0; people.length > i; i++) {
-      
       if(chatId == people[i]) {
          flag = true;
       }
@@ -53,9 +50,7 @@ const start = async () => {
    // HI
    bot.on('message', async msg => {
       const chatId = msg.chat.id;
-      
-      //console.log(msg);
-      
+      console.log(typeof chatId)
       await bot.sendMessage(chatId, `Привет, ${msg.from.first_name} ! Хочешь сделать расклад?`, ChoiceOptions);
    })
    
@@ -63,8 +58,6 @@ const start = async () => {
    bot.on('callback_query', async msg => {
       const data = msg.data;
       const chatId = msg.message.chat.id;
-      
-      console.log(oneAuthDate[chatId]);
       if(data === 'Yes') {        
          return startGame(chatId);
 
