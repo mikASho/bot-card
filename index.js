@@ -15,7 +15,7 @@ const Month = currentTime.getMonth()
 console.log(Month)
 
 const startGame = async (chatId) => {
-   await bot.sendPhoto(chatId, './pictures/Main.png');
+   await bot.sendPhoto(chatId, './pictures/Main.jpg');
    await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
    
    flag = false;
@@ -54,7 +54,7 @@ const start = async () => {
    bot.on('message', async msg => {
       const chatId = msg.chat.id;
       
-      console.log(msg);
+      //console.log(msg);
       
       await bot.sendMessage(chatId, `Привет, ${msg.from.first_name} ! Хочешь сделать расклад?`, ChoiceOptions);
    })
@@ -63,8 +63,6 @@ const start = async () => {
    bot.on('callback_query', async msg => {
       const data = msg.data;
       const chatId = msg.message.chat.id;
-
-      console.log(people);
       
       console.log(oneAuthDate[chatId]);
       if(data === 'Yes') {        
