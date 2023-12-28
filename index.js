@@ -6,7 +6,7 @@ const bot = new TelegramApi(token, {polling: true});
 
 const chats = {}
 const oneAuthDate = {}
-people = [];
+people = [1339170675];
 
 const currentTime = new Date();
 const Month = currentTime.getMonth()
