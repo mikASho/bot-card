@@ -5,7 +5,6 @@ const token = '6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c';
 const bot = new TelegramApi(token, {polling: true});
 
 const chats = {}
-people = [0];
 
 const currentTime = new Date();
 const Month = currentTime.getMonth()
@@ -15,15 +14,6 @@ const startGame = async (chatId) => {
    await bot.sendPhoto(chatId, './pictures/Main.jpg');
    await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
    
-   flag = false;
-   for(let i = 0; people.length > i; i++) {
-      if(chatId == people[i]) {
-         flag = true;
-      }
-   }  if(flag) {
-
-   }  else {  
-         people.push(chatId);
           //Rand Cards
          const numbers = [];
          while (numbers.length < 36) {
@@ -36,8 +26,6 @@ const startGame = async (chatId) => {
          const chunkedNumbersCard = SplitArray(numbers, 3); 
          chats[chatId] = chunkedNumbersCard;
          console.log(chats)
-      }
-      console.log(people)
 }
 
 const start = async () => {
@@ -50,8 +38,21 @@ const start = async () => {
    // HI
    bot.on('message', async msg => {
       const chatId = msg.chat.id;
-      console.log(typeof chatId)
-      await bot.sendMessage(chatId, `Привет, ${msg.from.first_name} ! Хочешь сделать расклад?`, ChoiceOptions);
+      const text = msg.text
+      console.log(chatId)
+      try {
+
+         if(text == '/start') {
+            await bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
+         }
+         if(text == '/info') {
+            //return bot.sendMessage(chatId)
+         }
+
+      } catch (e) {
+         return bot.sendMessage(chatId, 'Произошла какая то ошибочка!)');
+      }
+      
    })
    
    //Buttons of choice
