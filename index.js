@@ -40,18 +40,18 @@ const start = async () => {
       const chatId = msg.chat.id;
       const text = msg.text
       console.log(chatId)
-      try {
+      // try {
 
-         if(text == '/start') {
+         // if(text == '/start') {
             await bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
-         }
-         if(text == '/info') {
-            //return bot.sendMessage(chatId)
-         }
+         // }
+      //    if(text == '/info') {
+      //       //return bot.sendMessage(chatId)
+      //    }
 
-      } catch (e) {
-         return bot.sendMessage(chatId, 'Произошла какая то ошибочка!)');
-      }
+      // } catch (e) {
+      //    return bot.sendMessage(chatId, 'Произошла какая то ошибочка!)');
+      // }
       
    })
    
