@@ -38,17 +38,15 @@ const start = async () => {
    ]);   
 
    // HI
-   bot.on('message', async msg => {
+   bot.onText(/\/start/, async msg => {
       const chatId = msg.chat.id;
       // const text = msg.text
       console.log(chatId)
       // try {
 
          // if(text == '/start') {
-            bot.onText(/\/sendphoto/, (msg) => {
-               const photo = './pictures/Main.jpg';
-               bot.sendPhoto(chatId, photo);
-             });
+            const photo = './pictures/Main.jpg';
+            await bot.sendPhoto(chatId, photo);
             //await bot.sendPhoto(chatId, './pictures/Main.jpg');
             await bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
          // }
