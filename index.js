@@ -11,8 +11,8 @@ const Month = currentTime.getMonth()
 console.log(Month)
 
 const startGame = async (chatId) => {
-   await bot.sendPhoto(chatId, './pictures/Main.jpg');
-   await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
+   // await bot.sendPhoto(chatId, './pictures/Main.jpg');
+   // await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
    
           //Rand Cards
          const numbers = [];
@@ -26,6 +26,9 @@ const startGame = async (chatId) => {
          const chunkedNumbersCard = SplitArray(numbers, 3); 
          chats[chatId] = chunkedNumbersCard;
          console.log(chats)
+
+   //await bot.sendPhoto(chatId, './pictures/Main.jpg');
+   await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
 }
 
 const start = async () => {
@@ -61,7 +64,6 @@ const start = async () => {
       const chatId = msg.message.chat.id;
       if(data === 'Yes') {        
          return startGame(chatId);
-
       }
       if(data === 'No') {
          await bot.sendSticker(chatId, 'https://media.stickerswiki.app/ks_cahek/1019375.160.webp');
