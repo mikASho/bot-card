@@ -45,7 +45,11 @@ const start = async () => {
       // try {
 
          // if(text == '/start') {
-            await bot.sendPhoto(chatId, './pictures/Main.jpg');
+            bot.onText(/\/sendphoto/, (msg) => {
+               const photo = './pictures/Main.jpg';
+               bot.sendPhoto(chatId, photo);
+             });
+            //await bot.sendPhoto(chatId, './pictures/Main.jpg');
             await bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
          // }
       //    if(text == '/info') {
