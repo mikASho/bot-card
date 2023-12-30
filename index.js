@@ -38,7 +38,7 @@ const start = async () => {
    // HI
    bot.on('message', async msg => {
       const chatId = msg.chat.id;
-      const text = msg.text
+      // const text = msg.text
       console.log(chatId)
       // try {
 
@@ -53,7 +53,7 @@ const start = async () => {
       //    return bot.sendMessage(chatId, 'Произошла какая то ошибочка!)');
       // }
       
-   })
+   });
    
    //Buttons of choice
    bot.on('callback_query', async msg => {
@@ -69,13 +69,13 @@ const start = async () => {
       }
 
       if(data === '1') {       
-         await bot.sendPhoto(chatId, './pictures/' + chats[chatId][Month][0] + '.jpg');
+         await bot.sendPhoto(chatId, './pictures/' + chats[chatId][+Month][0] + '.jpg');
       }
       if(data === '2') {
-         await bot.sendPhoto(chatId, './pictures/' + chats[chatId][Month][1] + '.jpg');
+         await bot.sendPhoto(chatId, './pictures/' + chats[chatId][+Month][1] + '.jpg');
       }
       if(data === '3') {
-         await bot.sendPhoto(chatId, './pictures/' + chats[chatId][Month][2] + '.jpg');
+         await bot.sendPhoto(chatId, './pictures/' + chats[chatId][+Month][2] + '.jpg');
 
       }
    })
