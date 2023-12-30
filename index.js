@@ -27,7 +27,7 @@ const startGame = async (chatId) => {
          chats[chatId] = chunkedNumbersCard;
          console.log(chats)
 
-   //await bot.sendPhoto(chatId, './pictures/Main.jpg');
+   await bot.sendPhoto(chatId, './pictures/Main.jpg');
    await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
 }
 
