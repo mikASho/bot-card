@@ -3,7 +3,7 @@ const {gameOptions, ChoiceOptions, NoChoiceOptions} = require('./options')
 const sequelize = require('./db');
 const User = require('./models');
 
-const token = '6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c';
+const token = "6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c";
 
 const bot = new TelegramApi(token, {polling: true});
 
@@ -62,13 +62,6 @@ const start = async () => {
       //console.log(chatId)
       
          if(text == '/start') {
-
-         //   await User.create({
-         //      chatId: chatId
-         //    })//.then(res=>{
-            //    console.log(res);
-            //  }).catch(err=>console.log(err));
-
         await User.findOne({ where: { chatId }})
          .then((user) => {
             if (user) {
@@ -80,11 +73,11 @@ const start = async () => {
                   chatId: chatId
                 }), startGame(chatId)
                 
-               .then((newUser) => {
-                  console.log('Новая запись создана:', newUser);
+               .then((user) => {
+                  console.log('Новая запись создана:', user);
                })
                .catch((error) => {
-                  console.log('Ошибка при создании записи:');
+                  console.log('Ошибка при создании записи:', error);
                });
          }
          })
