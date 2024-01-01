@@ -85,7 +85,7 @@ const start = async () => {
          console.log('Ошибка при поиске записи:', error);
     
   });
-            await bot.sendPhoto(chatId, './pictures/Main.jpg');
+            await bot.sendPhoto(chatId, './pictures/main.jpg');
             return bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
                
          }  
