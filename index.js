@@ -3,7 +3,7 @@ const {gameOptions, ChoiceOptions, NoChoiceOptions} = require('./options')
 const sequelize = require('./db');
 const User = require('./models');
 
-const token = "6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c";
+const token = "6733124316:AAE_LMOeno0v5A0O4gjG3IbAwFYJtv4gqyg";
 
 const bot = new TelegramApi(token, {polling: true});
 
@@ -46,8 +46,8 @@ const startGame = async (chatId) => {
 const start = async () => {
 
    try {
-   //   await sequelize.authenticate();
-   //   await sequelize.sync({force: true}); // {force: true} на всякий пожарный
+     await sequelize.authenticate();
+     await sequelize.sync(); // {force: true} на всякий пожарный
   } catch (e) {
      // console.log('Подключение к бд сломалось', e)
   }
@@ -63,34 +63,31 @@ const start = async () => {
       //console.log(chatId)
       
          if(text == '/start') {
-            await sequelize.authenticate();
-            await sequelize.sync({force: true});
-
-        await User.findOne({ where: { chatId }})
-         .then((user) => {
-            if (user) {
-               console.log(user)
-               // Запись с таким chatId уже существует
-               console.log(user.Cards);
-               console.log('Запись уже существует-----------------------------------------------------------');
-            } else {
-               // Создаем новую запись
-               return User.create({
-                  chatId: chatId,
-                }), startGame(chatId)
-                
-               .then((user) => {
-                  console.log('Новая запись создана--------------------------------------------------------------:', user);
-               })
-               .catch((error) => {
-                  console.log('Ошибка при создании записи------------------------------------------------------:', error);
-               });
-         }
-         })
-         .catch((error) => {
-         console.log('Ошибка при поиске записи:', error);
-    
-  });
+            await User.findOne({ where: { chatId }})
+            .then((user) => {
+               if (user) {
+                  console.log(user)
+                  // Запись с таким chatId уже существует
+                  console.log(user.Cards);
+                  console.log('Запись уже существует-----------------------------------------------------------');
+               } else {
+                  // Создаем новую запись
+                  return User.create({
+                     chatId: chatId,
+                   }), startGame(chatId)
+                   
+                  .then((user) => {
+                     console.log('Новая запись создана--------------------------------------------------------------:', user);
+                  })
+                  .catch((error) => {
+                     console.log('Ошибка при создании записи------------------------------------------------------:', error);
+                  });
+            }
+            })
+            .catch((error) => {
+            console.log('Ошибка при поиске записи:', error);
+       
+       });
             await bot.sendPhoto(chatId, './pictures/main.jpg');
             return bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
                

@@ -2,10 +2,10 @@ const Sequelize = require('sequelize');
 
 module.exports = new Sequelize(
     'default_db',
-    'botcardroot1',
-    'botcardroot1',
+    'gen_user',
+    'db_card1',
     {
-        host: '109.172.88.46',
+        host: '81.31.246.191',
         port: '5432',
         dialect: 'postgres',
         define: {
