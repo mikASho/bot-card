@@ -26,7 +26,8 @@ const startGame = async (chatId) => {
          const chunkedNumbersCard = SplitArray(numbers, 3); 
          chats[chatId] = chunkedNumbersCard;
          console.log(chats)
-         await User.update({ Cards: chunkedNumbersCard }, {
+         console.log(chunkedNumbersCard)
+         User.update({ Cards: chunkedNumbersCard }, {
             where: {
               chatId: chatId
             }
@@ -45,8 +46,8 @@ const startGame = async (chatId) => {
 const start = async () => {
 
    try {
-     await sequelize.authenticate();
-     await sequelize.sync({force: true}); // {force: true} на всякий пожарный
+   //   await sequelize.authenticate();
+   //   await sequelize.sync({force: true}); // {force: true} на всякий пожарный
   } catch (e) {
      // console.log('Подключение к бд сломалось', e)
   }
@@ -62,22 +63,27 @@ const start = async () => {
       //console.log(chatId)
       
          if(text == '/start') {
+            await sequelize.authenticate();
+            await sequelize.sync({force: true});
+
         await User.findOne({ where: { chatId }})
          .then((user) => {
             if (user) {
+               console.log(user)
                // Запись с таким chatId уже существует
-               console.log('Запись уже существует');
+               console.log(user.Cards);
+               console.log('Запись уже существует-----------------------------------------------------------');
             } else {
                // Создаем новую запись
                return User.create({
-                  chatId: chatId
+                  chatId: chatId,
                 }), startGame(chatId)
                 
                .then((user) => {
-                  console.log('Новая запись создана:', user);
+                  console.log('Новая запись создана--------------------------------------------------------------:', user);
                })
                .catch((error) => {
-                  console.log('Ошибка при создании записи:', error);
+                  console.log('Ошибка при создании записи------------------------------------------------------:', error);
                });
          }
          })
@@ -148,7 +154,7 @@ const start = async () => {
       if(data === '3') {
          await bot.sendPhoto(chatId, './pictures/' + user.Cards[Month][2] + '.jpg');
       }
-      await user.save();
+      // await user.save();
    })
 
 }

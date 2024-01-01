@@ -10,7 +10,7 @@ const User = sequelize.define("user", {
         unique: true 
     },
     chatId: { type: 
-        DataTypes.INTEGER, 
+        DataTypes.BIGINT, 
         unique: true, 
         allowNull: true 
     },
