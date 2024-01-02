@@ -3,42 +3,26 @@ const {gameOptions, ChoiceOptions, NoChoiceOptions} = require('./options')
 const sequelize = require('./db');
 const User = require('./models');
 
-const token = "6733124316:AAE_LMOeno0v5A0O4gjG3IbAwFYJtv4gqyg";
+const token = "6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c";
 
 const bot = new TelegramApi(token, {polling: true});
 
-const chats = {}
-
 const currentTime = new Date();
 const Month = currentTime.getMonth()
-//console.log(Month)
 
 const startGame = async (chatId) => {
-          //Rand Cards
-         const numbers = [];
-         while (numbers.length < 36) {
-            const randomNum = Math.floor(Math.random() * (36)) + 1;
-            if (!numbers.includes(randomNum)) {
-               numbers.push(randomNum);
-            }
-         }
-         // разбили массив на куски по 3 эл, объект с двумерным массивом
-         const chunkedNumbersCard = SplitArray(numbers, 3); 
-         chats[chatId] = chunkedNumbersCard;
-         console.log(chats)
-         console.log(chunkedNumbersCard)
-         User.update({ Cards: chunkedNumbersCard }, {
-            where: {
-              chatId: chatId
-            }
-          }).then((res) => {
-            console.log(res);
-          });
+         // User.update({ Cards: chunkedNumbersCard }, {
+         //    where: {
+         //      chatId: chatId
+         //    }
+         //  }).then((res) => {
+         //    console.log(res);
+         //  });
 
-          User.findAll({where:{chatId: chatId}, raw: true })
-            .then(users=>{
-              console.log(users);
-            }).catch(err=>console.log(err));
+         //  User.findAll({where:{chatId: chatId}, raw: true })
+         //    .then(users=>{
+         //      console.log(users);
+         //    }).catch(err=>console.log(err));
 
    // await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
 }
@@ -63,31 +47,17 @@ const start = async () => {
       //console.log(chatId)
       
          if(text == '/start') {
-            await User.findOne({ where: { chatId }})
-            .then((user) => {
-               if (user) {
-                  console.log(user)
-                  // Запись с таким chatId уже существует
-                  console.log(user.Cards);
-                  console.log('Запись уже существует-----------------------------------------------------------');
-               } else {
-                  // Создаем новую запись
-                  return User.create({
+                  try {
+                     await User.create({
+
                      chatId: chatId,
-                   }), startGame(chatId)
-                   
-                  .then((user) => {
-                     console.log('Новая запись создана--------------------------------------------------------------:', user);
-                  })
-                  .catch((error) => {
-                     console.log('Ошибка при создании записи------------------------------------------------------:', error);
-                  });
-            }
-            })
-            .catch((error) => {
-            console.log('Ошибка при поиске записи:', error);
-       
-       });
+                     Cards: RandNum(chatId),
+
+                     })
+                  }
+                  catch {
+                     console.log('Запись существует.')
+                  }
             await bot.sendPhoto(chatId, './pictures/main.jpg');
             return bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
                
@@ -121,9 +91,6 @@ const start = async () => {
             return bot.sendMessage(chatId, information)
          }
 
-     // } catch (e) {
-     //    return bot.sendMessage(chatId, 'Произошла какая-то ошибочка!)');
-     // }
       
 });
    
@@ -163,5 +130,17 @@ function SplitArray(array, chunkSize) {
      result.push(chunk);
    }
    return result;
+ };
+ function RandNum(chatId) {
+   const numbers = [];
+         while (numbers.length < 36) {
+            const randomNum = Math.floor(Math.random() * (36)) + 1;
+            if (!numbers.includes(randomNum)) {
+               numbers.push(randomNum);
+            }
+         }
+         // разбили массив на куски по 3 эл, объект с двумерным массивом
+         const chunkedNumbersCard = SplitArray(numbers, 3);
+         return chunkedNumbersCard;
  }
 start();

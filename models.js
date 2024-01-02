@@ -12,11 +12,11 @@ const User = sequelize.define("user", {
     chatId: { type: 
         DataTypes.BIGINT, 
         unique: true, 
-        allowNull: true 
+        allowNull: false 
     },
     Cards: { type:
         DataTypes.ARRAY(DataTypes.STRING),
-        allowNull: true,
+        allowNull: false,
     },
 });
 
