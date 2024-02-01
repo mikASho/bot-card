@@ -7,28 +7,12 @@ const token = "6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c";
 
 const bot = new TelegramApi(token, {polling: true});
 
-const currentTime = new Date();
-const Month = currentTime.getMonth()
 
-const startGame = async (chatId) => {
-         // User.update({ Cards: chunkedNumbersCard }, {
-         //    where: {
-         //      chatId: chatId
-         //    }
-         //  }).then((res) => {
-         //    console.log(res);
-         //  });
-
-         //  User.findAll({where:{chatId: chatId}, raw: true })
-         //    .then(users=>{
-         //      console.log(users);
-         //    }).catch(err=>console.log(err));
-
-   // await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
-}
 
 const start = async () => {
-
+   const currentTime = new Date();
+   const Month = currentTime.getMonth()
+   console.log(Month)
    try {
      await sequelize.authenticate();
      await sequelize.sync(); // {force: true} на всякий пожарный
@@ -118,7 +102,6 @@ const start = async () => {
       if(data === '3') {
          await bot.sendPhoto(chatId, './pictures/' + user.Cards[Month][2] + '.jpg');
       }
-      // await user.save();
    })
 
 }
