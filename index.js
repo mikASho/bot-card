@@ -1,50 +1,45 @@
 const TelegramApi = require('node-telegram-bot-api');
-const {gameOptions, ChoiceOptions, NoChoiceOptions} = require('./options')
+const {gameOptions, ChoiceOptions, NoChoiceOptions, LastMonth} = require('./options')
 const sequelize = require('./db');
 const User = require('./models');
 
-const token = "6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c";
-
+const token = "6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c"; 
+//6130409698:AAERNKONNO6EMT7bA8EEYLKTxIrH8R7Q12c - акту
+//6733124316:AAE_LMOeno0v5A0O4gjG3IbAwFYJtv4gqyg - тестовый
 const bot = new TelegramApi(token, {polling: true});
 
-
-
 const start = async () => {
-   const currentTime = new Date();
-   const Month = currentTime.getMonth()
+   let currentTime = new Date();
+   let Month = currentTime.getMonth();
+   let lastMonth = Month - 1;
    console.log(Month)
    try {
      await sequelize.authenticate();
      await sequelize.sync(); // {force: true} на всякий пожарный
   } catch (e) {
-     // console.log('Подключение к бд сломалось', e)
+     
   }
    bot.setMyCommands([
       {command: '/start', description: 'Приступить'},
       {command: '/info', description: 'Правила'},
    ]);   
-
    // HI
    bot.on('message', async msg => {
       const chatId = msg.chat.id;
       const text = msg.text
-      //console.log(chatId)
       
          if(text == '/start') {
                   try {
                      await User.create({
-
-                     chatId: chatId,
-                     Cards: RandNum(chatId),
-
+                        chatId: chatId,
+                        Cards: RandNum(chatId),
                      })
                   }
                   catch {
                      console.log('Запись существует.')
                   }
             await bot.sendPhoto(chatId, './pictures/main.jpg');
-            return bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);
-               
+            return bot.sendMessage(chatId, `Привет, ${msg.from.first_name}! Хочешь сделать расклад?`, ChoiceOptions);           
          }  
          if(text == '/info') {
                // const user = await UserModel.findOne({chatId})
@@ -73,9 +68,7 @@ const start = async () => {
                   • 3 место (приз организаторских сердец) - участник, поразивший организаторов чуткостью анализа произведений, получит специальный приз. 
                   Призы победителям отправим/закажем на территории РФ.` 
             return bot.sendMessage(chatId, information)
-         }
-
-      
+         }     
 });
    
    //Buttons of choice
@@ -83,13 +76,14 @@ const start = async () => {
       const data = msg.data;
       const chatId = msg.message.chat.id;
       if(data === 'Yes') {        
-         
-         // return startGame(chatId); // не забыть условие
          await bot.sendMessage(chatId, 'Вам выпало 3 карты', gameOptions);
       }
       if(data === 'No') {
          await bot.sendSticker(chatId, 'https://media.stickerswiki.app/ks_cahek/1019375.160.webp');
          await bot.sendMessage(chatId, 'А сейчас ?', NoChoiceOptions);
+      }
+      if(data === 'lastMonth'){
+         await bot.sendMessage(chatId, 'Прошлый месяц', LastMonth);
       }
 
       const user = await User.findOne({where: {chatId: chatId}})
@@ -102,6 +96,18 @@ const start = async () => {
       if(data === '3') {
          await bot.sendPhoto(chatId, './pictures/' + user.Cards[Month][2] + '.jpg');
       }
+      // LAST MONTH CARDS
+
+      if(data === '11') {      
+         await bot.sendPhoto(chatId, './pictures/' + user.Cards[lastMonth][0] + '.jpg');
+      }
+      if(data === '22') {
+         await bot.sendPhoto(chatId, './pictures/' + user.Cards[lastMonth][1] + '.jpg');
+      }
+      if(data === '33') {
+         await bot.sendPhoto(chatId, './pictures/' + user.Cards[lastMonth][2] + '.jpg');
+      }
+
    })
 
 }
